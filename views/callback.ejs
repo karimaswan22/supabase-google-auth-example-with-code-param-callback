@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Callback</title>
+</head>
+<body>
+  <h1>Processing login...</h1>
+  <script>
+    (async () => {
+      const params = new URLSearchParams(window.location.search);
+      const code = params.get('code');
+      if (!code) return alert('No code provided');
+
+      // Send code to server to exchange for session
+      const res = await fetch('/exchange-code', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({ code })
+      });
+      const data = await res.json();
+      if (data.ok) {
+        window.location.href = '/notes';
+      } else {
+        alert('Login failed');
+      }
+    })();
+  </script>
+</body>
+</html>
